@@ -21,7 +21,8 @@ Open `http://127.0.0.1:8000/` for the public site and `/admin/` for the CMS.
 2. Create an Application from the GitHub repository (branch `main`). Sevalla builds it with
    Nixpacks, which reads `runtime.txt` (Python 3.12) and runs the `web` process in `Procfile`.
 3. Connect the database to the application under **Networking → Connected services** (or
-   **Environment variables → Add from database**) so `DATABASE_URL` is set, using the internal connection.
+   **Environment variables → Add from database**). The app reads `DATABASE_URL`, or the `DB_URL`
+   variable that Sevalla adds, and refuses to start in production without one.
 4. Add these environment variables to the application:
    - `DJANGO_SECRET_KEY`: a long random string
    - `DJANGO_DEBUG=False`

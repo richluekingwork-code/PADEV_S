@@ -114,14 +114,21 @@ EMAIL_BACKEND = os.environ.get(
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if os.environ.get('DATABASE_URL'):
+# Sevalla's "connected database" adds DB_URL; DATABASE_URL takes precedence when set.
+_database_url = os.environ.get('DATABASE_URL') or os.environ.get('DB_URL')
+
+if _database_url:
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ['DATABASE_URL'],
+            _database_url,
             conn_max_age=600,
             conn_health_checks=True,
         )
     }
+elif not DEBUG:
+    # A container's SQLite file is wiped on every deploy, so never fall back to it in production.
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('Set DATABASE_URL (or DB_URL) when DJANGO_DEBUG is False.')
 else:
     DATABASES = {
         'default': {
