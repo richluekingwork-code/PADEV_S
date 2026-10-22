@@ -2,7 +2,14 @@
 set -e
 
 python manage.py migrate --noinput
-python manage.py collectstatic --noinput
+# django-cloudinary-storage replaces collectstatic and skips "unhashed" files such as the
+# admin's images unless told otherwise, which breaks WhiteNoise's manifest. The flag only
+# exists when Cloudinary is configured.
+if [ -n "$CLOUDINARY_URL" ] || [ -n "$CLOUDINARY_CLOUD_NAME" ]; then
+    python manage.py collectstatic --noinput --upload-unhashed-files
+else
+    python manage.py collectstatic --noinput
+fi
 
 # Seed the reference content the first time the database is empty. Safe to run on
 # every deploy: each command exits immediately once its content exists, so editors
