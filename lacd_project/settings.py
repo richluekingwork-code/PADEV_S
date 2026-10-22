@@ -71,7 +71,11 @@ INSTALLED_APPS = [
     'core',
 ]
 
+# e.g. www.padev.org: requests for the bare domain are redirected there. Empty disables it.
+CANONICAL_HOST = os.environ.get('CANONICAL_HOST', '').strip().lower()
+
 MIDDLEWARE = [
+    'core.middleware.CanonicalHostMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
