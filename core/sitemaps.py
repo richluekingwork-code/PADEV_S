@@ -1,4 +1,5 @@
 from django.contrib.sitemaps import Sitemap
+from django.urls import reverse
 from .models import (
     Program, Project, NewsUpdate, SuccessStory,
     Publication, ProcurementOpportunity, Career,
@@ -103,3 +104,20 @@ class ProgramStructureSitemap(Sitemap):
 
     def lastmod(self, obj):
         return obj.created_at
+
+
+class StaticViewSitemap(Sitemap):
+    """The fixed pages (home, about, team, ...) that have no model behind them."""
+    changefreq = "monthly"
+
+    def items(self):
+        return [
+            'home', 'about', 'team', 'contact', 'program_list', 'project_list',
+            'news_list', 'publication_list', 'procurement_list', 'career_list',
+        ]
+
+    def location(self, item):
+        return reverse(f'core:{item}')
+
+    def priority(self, item):
+        return 1.0 if item == 'home' else 0.9

@@ -16,16 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
+from django.http import HttpResponse
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from core.sitemaps import (
     ProgramSitemap, ProjectSitemap, NewsUpdateSitemap,
     SuccessStorySitemap, PublicationSitemap, ProcurementSitemap, CareerSitemap,
-    HeroSlideSitemap, ProgramStructureSitemap,
+    HeroSlideSitemap, ProgramStructureSitemap, StaticViewSitemap,
 )
 
 sitemaps = {
+    'pages': StaticViewSitemap(),
     'programs': ProgramSitemap(),
     'projects': ProjectSitemap(),
     'news': NewsUpdateSitemap(),
@@ -36,8 +38,21 @@ sitemaps = {
     'hero_slides': HeroSlideSitemap(),
     'program_structure': ProgramStructureSitemap(),
 }
+for _sitemap in sitemaps.values():
+    _sitemap.protocol = 'https'
+
+
+def robots_txt(request):
+    lines = [
+        'User-agent: *',
+        'Disallow: /admin/',
+        f'Sitemap: https://{request.get_host()}/sitemap.xml',
+    ]
+    return HttpResponse('\n'.join(lines) + '\n', content_type='text/plain')
+
 
 urlpatterns = [
+    path('robots.txt', robots_txt),
     path('admin/', admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django-sitemaps'),
     path('', include('core.urls')),

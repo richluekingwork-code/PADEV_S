@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ site_settings.site_name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_desc %}Official portal of {{ site_settings.site_name }}. Building alliances to mitigate global environmental challenges through community-based natural resource management, sustainable forest conservation, and livelihood development in Liberia.{% endblock %}">
+    <link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:site_name" content="{{ site_settings.site_name }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://{{ request.get_host }}{{ request.path }}">
+    {% if site_settings.logo %}<meta property="og:image" content="{% if not site_settings.logo.url|slice:':4' == 'http' %}https://{{ request.get_host }}{% endif %}{{ site_settings.logo.url }}">{% endif %}
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,8 +71,8 @@
         "@type": "NGO",
         "name": "{{ site_settings.site_name }}",
         "alternateName": "{{ site_settings.agency_acronym }}",
-        "url": "{{ request.build_absolute_uri }}",
-        {% if site_settings.logo %}"logo": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}",{% endif %}
+        "url": "https://{{ request.get_host }}/",
+        {% if site_settings.logo %}"logo": "{% if not site_settings.logo.url|slice:':4' == 'http' %}https://{{ request.get_host }}{% endif %}{{ site_settings.logo.url }}",{% endif %}
         "description": "Building alliances to mitigate global environmental challenges through community-based natural resource management, sustainable forest conservation, and livelihood development in Liberia.",
         "address": {
             "@type": "PostalAddress",
