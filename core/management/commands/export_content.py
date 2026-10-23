@@ -11,7 +11,6 @@ export can be matched against the live records later.
 """
 
 import csv
-import json
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
@@ -84,7 +83,13 @@ SPECS = (
             ('contact_email', _raw('contact_email')),
             ('contact_phone', _raw('contact_phone')),
             ('address', _raw('address')),
-            ('social_links', lambda r: json.dumps(r.social_links, ensure_ascii=False) if r.social_links else ''),
+            ('facebook_url', _raw('facebook_url')),
+            ('x_url', _raw('x_url')),
+            ('instagram_url', _raw('instagram_url')),
+            ('linkedin_url', _raw('linkedin_url')),
+            ('youtube_url', _raw('youtube_url')),
+            ('tiktok_url', _raw('tiktok_url')),
+            ('whatsapp_url', _raw('whatsapp_url')),
             ('logo', _raw('logo')),
             ('hero_background_image', _raw('hero_background_image')),
             ('hero_text', _raw('hero_text')),

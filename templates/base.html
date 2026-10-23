@@ -86,7 +86,7 @@
             "contactType": "customer service"
         },
         "sameAs": [
-            {% for key, value in site_settings.social_links.items %}{% if value %}"{{ value }}"{% if not forloop.last %},{% endif %}{% endif %}{% endfor %}
+            {% for profile in site_settings.social_profiles %}"{{ profile.url }}"{% if not forloop.last %},{% endif %}{% endfor %}
         ]
     }
     </script>
@@ -119,12 +119,10 @@
                     <i class="ri-phone-line text-lacd-gold"></i> {{ site_settings.contact_phone }}
                 </a>
                 <div class="hidden sm:flex items-center gap-3 ml-2 border-l border-slate-700 pl-4">
-                    {% for key, value in site_settings.social_links.items %}
-                        {% if value %}
-                            <a href="{{ value }}" class="hover:text-lacd-gold transition-colors" title="{{ key|title }}" target="_blank" rel="noopener noreferrer">
-                                {% if key == 'facebook' %}<i class="ri-facebook-circle-fill"></i>{% elif key == 'twitter' %}<i class="ri-twitter-x-fill"></i>{% elif key == 'linkedin' %}<i class="ri-linkedin-box-fill"></i>{% else %}<i class="ri-youtube-fill"></i>{% endif %}
-                            </a>
-                        {% endif %}
+                    {% for profile in site_settings.social_profiles %}
+                        <a href="{{ profile.url }}" class="hover:text-lacd-gold transition-colors" title="{{ profile.name }}" aria-label="{{ profile.name }}" target="_blank" rel="noopener noreferrer">
+                            <i class="{{ profile.icon }}"></i>
+                        </a>
                     {% endfor %}
                 </div>
             </div>
@@ -269,10 +267,8 @@
                         {{ site_settings.site_name }} builds alliances to mitigate global environmental challenges — supporting community-based natural resource management, sustainable forest conservation, and livelihood development across over 100 forest-fringed communities in Liberia.
                     </p>
                     <div class="flex items-center gap-3 pt-2 text-slate-400">
-                        {% for key, value in site_settings.social_links.items %}
-                            {% if value %}
-                                <a href="{{ value }}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-lacd-gold hover:text-lacd-navy transition-all"><i class="{% if key == 'facebook' %}ri-facebook-fill{% elif key == 'twitter' %}ri-twitter-x-fill{% elif key == 'linkedin' %}ri-linkedin-fill{% else %}ri-youtube-fill{% endif %} text-sm"></i></a>
-                            {% endif %}
+                        {% for profile in site_settings.social_profiles %}
+                            <a href="{{ profile.url }}" target="_blank" rel="noopener noreferrer" title="{{ profile.name }}" aria-label="{{ profile.name }}" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-lacd-gold hover:text-lacd-navy transition-all"><i class="{{ profile.icon }} text-sm"></i></a>
                         {% endfor %}
                     </div>
                 </div>

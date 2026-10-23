@@ -77,7 +77,17 @@ class SiteSettingAdmin(ModelAdmin):
                 'in ** are bold. Core values are one value per line and appear as chips.'
             ),
         }),
-        ('Contact & Social', {'fields': ('contact_email', 'contact_phone', 'address', 'social_links')}),
+        ('Contact', {'fields': ('contact_email', 'contact_phone', 'address')}),
+        ('Social Media', {
+            'fields': (
+                'facebook_url', 'x_url', 'instagram_url', 'linkedin_url',
+                'youtube_url', 'tiktok_url', 'whatsapp_url',
+            ),
+            'description': (
+                'Paste the full web address of each account PADEV has. Every filled-in account '
+                'appears as an icon in the website footer and top bar; leave a box empty to hide it.'
+            ),
+        }),
     )
     compressed_fields = True
 

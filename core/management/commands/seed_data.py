@@ -29,10 +29,8 @@ class Command(BaseCommand):
         site_settings.contact_email = 'info@padev.org'
         site_settings.contact_phone = '+231 088 651 8396'
         site_settings.address = 'Sophie Community, Opposite HILA School, Congo Town, Liberia'
-        site_settings.social_links = {
-            'facebook': 'https://web.facebook.com/PADEVLIBERIA',
-            'instagram': 'https://www.instagram.com/padevliberia/',
-        }
+        site_settings.facebook_url = 'https://web.facebook.com/PADEVLIBERIA'
+        site_settings.instagram_url = 'https://www.instagram.com/padevliberia/'
         site_settings.save()
 
         # ─── Navigation Menus ───

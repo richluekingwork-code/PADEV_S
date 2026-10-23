@@ -11,7 +11,13 @@ class SiteSetting(models.Model):
     contact_email = models.EmailField(default='info@padev.org')
     contact_phone = models.CharField(max_length=50, default='+231 088 651 8396')
     address = models.CharField(max_length=255, default='Sophie Community, Opposite HILA School, Congo Town, Monrovia, Liberia')
-    social_links = models.JSONField(default=dict, blank=True)
+    facebook_url = models.URLField('Facebook', blank=True, help_text="Full page address, e.g. https://www.facebook.com/PADEVLIBERIA")
+    x_url = models.URLField('X (Twitter)', blank=True, help_text="e.g. https://x.com/padevliberia")
+    instagram_url = models.URLField('Instagram', blank=True, help_text="e.g. https://www.instagram.com/padevliberia/")
+    linkedin_url = models.URLField('LinkedIn', blank=True, help_text="e.g. https://www.linkedin.com/company/padev")
+    youtube_url = models.URLField('YouTube', blank=True, help_text="e.g. https://www.youtube.com/@padevliberia")
+    tiktok_url = models.URLField('TikTok', blank=True, help_text="e.g. https://www.tiktok.com/@padevliberia")
+    whatsapp_url = models.URLField('WhatsApp', blank=True, help_text="Chat link with the number in international format, e.g. https://wa.me/231886518396")
     hero_background_image = models.ImageField(upload_to='site/', blank=True, null=True, help_text="Optional background image for the hero section on the homepage")
     hero_text = models.TextField(
         blank=True,
@@ -224,6 +230,26 @@ class SiteSetting(models.Model):
     def save(self, *args, **kwargs):
         self.pk = 1
         super().save(*args, **kwargs)
+
+    # (field, label, Remix icon) in the order the icons appear on the site.
+    SOCIAL_PLATFORMS = (
+        ('facebook_url', 'Facebook', 'ri-facebook-fill'),
+        ('x_url', 'X (Twitter)', 'ri-twitter-x-fill'),
+        ('instagram_url', 'Instagram', 'ri-instagram-line'),
+        ('linkedin_url', 'LinkedIn', 'ri-linkedin-fill'),
+        ('youtube_url', 'YouTube', 'ri-youtube-fill'),
+        ('tiktok_url', 'TikTok', 'ri-tiktok-fill'),
+        ('whatsapp_url', 'WhatsApp', 'ri-whatsapp-line'),
+    )
+
+    @property
+    def social_profiles(self):
+        """The filled-in social accounts, for the header, footer and structured data."""
+        return [
+            {'name': label, 'url': getattr(self, field), 'icon': icon}
+            for field, label, icon in self.SOCIAL_PLATFORMS
+            if getattr(self, field)
+        ]
 
     @classmethod
     def get_instance(cls):
