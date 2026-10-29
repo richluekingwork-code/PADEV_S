@@ -74,6 +74,11 @@ INSTALLED_APPS = [
 # e.g. www.padev.org: requests for the bare domain are redirected there. Empty disables it.
 CANONICAL_HOST = os.environ.get('CANONICAL_HOST', '').strip().lower()
 
+# Where @padev.org mailboxes are hosted (Namecheap cPanel). Served to mail apps by
+# core.mail_autoconfig so their auto-setup finds the real server, not this website.
+MAIL_DOMAIN = os.environ.get('MAIL_DOMAIN', 'padev.org')
+MAIL_SERVER_HOSTNAME = os.environ.get('MAIL_SERVER_HOSTNAME', 'premium72.web-hosting.com')
+
 MIDDLEWARE = [
     'core.middleware.CanonicalHostMiddleware',
     'django.middleware.security.SecurityMiddleware',

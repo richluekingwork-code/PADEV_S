@@ -20,6 +20,7 @@ from django.http import HttpResponse
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from core.mail_autoconfig import outlook_autodiscover, thunderbird_autoconfig
 from core.sitemaps import (
     ProgramSitemap, ProjectSitemap, NewsUpdateSitemap,
     SuccessStorySitemap, PublicationSitemap, ProcurementSitemap, CareerSitemap,
@@ -53,6 +54,11 @@ def robots_txt(request):
 
 urlpatterns = [
     path('robots.txt', robots_txt),
+    # Mail app auto-setup for @padev.org (see core/mail_autoconfig.py).
+    path('autodiscover/autodiscover.xml', outlook_autodiscover),
+    path('Autodiscover/Autodiscover.xml', outlook_autodiscover),
+    path('mail/config-v1.1.xml', thunderbird_autoconfig),
+    path('.well-known/autoconfig/mail/config-v1.1.xml', thunderbird_autoconfig),
     path('admin/', admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django-sitemaps'),
     path('', include('core.urls')),

@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.http import HttpResponsePermanentRedirect
 
+from .mail_autoconfig import AUTOCONFIG_PATHS
+
 
 class CanonicalHostMiddleware:
     """301-redirect the bare domain (padev.org) to CANONICAL_HOST (www.padev.org).
@@ -16,6 +18,10 @@ class CanonicalHostMiddleware:
         self.bare = canonical.removeprefix('www.') if canonical.startswith('www.') else ''
 
     def __call__(self, request):
-        if self.bare and request.get_host().split(':')[0].lower() == self.bare:
+        if (
+            self.bare
+            and request.path.lower() not in AUTOCONFIG_PATHS
+            and request.get_host().split(':')[0].lower() == self.bare
+        ):
             return HttpResponsePermanentRedirect(f'https://{self.canonical}{request.get_full_path()}')
         return self.get_response(request)
